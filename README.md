@@ -1,6 +1,6 @@
 # Asia Miles Redemption Availability Watcher
 
-This Python script monitors seat availability for Asia Miles redemption across specified cabin classes, routes, and dates. When seats become available, it sends real-time push notifications using Pushover.
+This script helps you secure redemption seats on Cathay Pacific by notifying you in real-time, addressing the significant delays in information update on their website that previously caused me to miss out on the tickets I wanted.
 
 ## Requirements
 - Python 3.7+
