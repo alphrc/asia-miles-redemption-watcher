@@ -47,14 +47,15 @@ def send_push_notification(title: str, message: str):
 def monitor_flight_price():
     url = "https://trp.greaterbay-airlines.com/cn-HK/flights/results/HKG-CTS-241229-900-0"
     latest_price = None
+    tax_fee = 530
 
     while True:
         driver.get(url)
-        time.sleep(10)
+        time.sleep(30)
 
         try:
             price_element = driver.find_element(By.CSS_SELECTOR, "div.fsifv-cabin-card div.cabin-price span.money-num")
-            current_price = int(price_element.text.replace(",", ""))
+            current_price = int(price_element.text.replace(",", "")) + tax_fee
             logger.info(f"Current price: ${current_price}")
             if latest_price is not None and current_price != latest_price:
                 send_push_notification("GBA Flight Price Alert", f"Price changed from ${latest_price} to ${current_price}")
@@ -73,7 +74,7 @@ def monitor_flight_price():
             logger.warning("Seat availability information not found")
 
         logger.info("Waiting for 1 minute before the next check...")
-        time.sleep(60)
+        time.sleep(30)
 
 def cleanup():
     logger.info("Closing ChromeDriver...")
