@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 DEPARTURE, ARRIVAL = "HKG", "CTS"
 CABIN_CLASSES = {"eco", "pey", "bus"} # or "fir"
 PASSENGERS = 2
-TARGET_DATES = {"20241228", "20241229", "20241230"} # YYYYMMDD
+TARGET_DATES = {"20241228", "20241229"} # YYYYMMDD
 DATE_START, DATE_END = "20241227", "20250101" # YYYYMMDD
 SLEEP_TIME = 60 # seconds
 
@@ -42,13 +42,13 @@ def check_availability(departure, arrival, cabin_classes, passengers, date_start
         logger.error(f"Error fetching availability: {e}")
         return []
 
-def send_push_notification(avlb_dates: dict):
+def send_push_notification(title, message):
     url = "https://api.pushover.net/1/messages.json"
     data = {
         "token": os.getenv("PUSHOVER_API_TOKEN"),
         "user": os.getenv("PUSHOVER_USER_KEY"),
-        "title": "Asia Miles Redemption",
-        "message": "Seats available:\n" + "\n".join([f"- {date}: {','.join(cls)}" for date, cls in avlb_dates.items()])
+        "title": title,
+        "message": message
     }
     try:
         response = requests.post(url, data=data)
@@ -70,7 +70,10 @@ if __name__ == "__main__":
         )
         if avl_dates:
             logger.success(f"Found: {avl_dates}")
-            send_push_notification(avl_dates)
+            title = "Asia Miles Redemption"
+            message = "Seats available:\n" + "\n".join([f"- {date}: {','.join(cls)}" for date, cls in avl_dates.items()])
+            send_push_notification(title, message)
+            SLEEP_TIME = 300
         else:
             logger.info(f"Not found, retrying in {SLEEP_TIME} seconds")
         time.sleep(SLEEP_TIME)
