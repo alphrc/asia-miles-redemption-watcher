@@ -30,9 +30,16 @@ PUSHOVER_API_TOKEN=your_pushover_api_token
 PUSHOVER_USER_KEY=your_pushover_user_key
 ```
 
+**5. (Optional) Install Chrome 126 and ChromeDriver**
+The data from GBA Airline cannot be directly accessed. Chrome and ChromeDriver are needed to scrape the data.
 
+**Chrome**: Install Chrome v126 from [Uptown](https://google-chrome.en.uptodown.com/mac/download/1016453176)
+
+**ChromeDriver**: Find the [ChromeDriver](https://developer.chrome.com/docs/chromedriver/downloads/canary) of the same version as Chrome for your OS
 
 ## Usage
+
+### Cathay Asia Miles Redemption Monitor
 **1. Edit the script configuration**
 Modify the following variables in the script to suit your preferences:
 - `DEPARTURE` and `ARRIVAL`: Departure and arrival airport codes.
@@ -44,9 +51,19 @@ Modify the following variables in the script to suit your preferences:
 
 **2. Run the script**
 ```bash
-python asia_miles_monitor.py
+python src/cathay.py
 ```
+
 The script will:
 1. Check seat availability for the configured routes and dates.
 2. Send a push notification when matching seats are found.
 3. Retry at the specified interval if no matches are available.
+
+### GBA Airline Price Monitor
+```bash
+python src/gba.py
+```
+
+The script will:
+1. Check current price for selected flight, notify you once there's change
+2. Check seats availability, notify you once there are limited seats left.
